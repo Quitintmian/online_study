@@ -50,7 +50,7 @@ public class EduTeacherController {
 
     // 2.逻辑删除讲师
     @ApiOperation(value = "逻辑删除讲师")
-    @DeleteMapping("{id}")
+    @DeleteMapping("deleteTeacher/{id}")
     public R removeTeacher(@ApiParam(name = "id", value = "讲师ID", required = true)
                                      @PathVariable("id") String id){
         boolean flag = teacherService.removeById(id);
@@ -113,6 +113,26 @@ public class EduTeacherController {
         return R.ok().data("total",total).data("rows",records);
     }
 
+    // 5.添加讲师接口
+    @ApiOperation(value = "添加讲师")
+    @PostMapping("addTeacher")
+    public R addTeacher(@RequestBody EduTeacher eduTeacher){
+        boolean save = teacherService.save(eduTeacher);
+        return save ? R.ok() : R.error();
+    }
 
+    // 6.通过id查询 (回显数据)
+    @GetMapping("getTeacher/{id}")
+    public R getTeacher(@PathVariable String id){
+        EduTeacher teacher = teacherService.getById(id);
+        return R.ok().data("teacher",teacher);
+    }
+
+    // 7.修改功能 (需要传对象的id值)
+    @PostMapping("updateTeacher")
+    public R updateTeacher(@RequestBody EduTeacher eduTeacher){
+        boolean flag = teacherService.updateById(eduTeacher);
+        return flag ? R.ok() : R.error();
+    }
 }
 
