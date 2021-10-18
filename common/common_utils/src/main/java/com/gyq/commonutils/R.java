@@ -16,7 +16,7 @@ public class R {
     private String message;
     @ApiModelProperty(value = "返回数据")
     private Map<String, Object> data = new HashMap<>();
-    private R(){}
+    private R(){} // 防止手动创建
     // 静态成功方法
     public static R ok(){
         R r = new R();
