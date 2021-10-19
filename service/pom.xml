@@ -29,12 +29,7 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
-        <!--引入common_utils-->
-        <dependency>
-            <groupId>com.gyq</groupId>
-            <artifactId>common_utils</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        <!--由于在service_base中映入了utils,因此无需再次引入-->
 
         <!--<dependency>-->
         <!--    <groupId>org.springframework.cloud</groupId>-->
