@@ -30,6 +30,7 @@ import java.util.Map;
 @Api(tags = "讲师Controller")
 @RestController // = @Controller + @ResponseBody
 @RequestMapping("/eduservice/teacher")
+@CrossOrigin
 public class EduTeacherController {
 
     // 注入讲师对应的service
@@ -100,13 +101,16 @@ public class EduTeacherController {
             wrapper.eq("level",level); // ==
         }
         if (!StringUtils.isEmpty(begin)){
-            wrapper.ge("gmt_creat",begin); // >=
+            wrapper.ge("gmt_create",begin); // >=
         }
         if (!StringUtils.isEmpty(end)){
-            wrapper.le("gmt_creat",end); // <=
+            wrapper.le("gmt_create",end); // <=
         }
 
-        teacherService.page(pageVo,wrapper);
+        // 排序：创建时间降序排序
+        wrapper.orderByDesc("gmt_create");
+
+        teacherService.page(pageVo,wrapper); // 若teacherVo为空，则wrapper为空
         long total = pageVo.getTotal();
         List<EduTeacher> records = pageVo.getRecords();
 
