@@ -36,6 +36,7 @@ public class OssServiceImpl implements OssService {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
+            assert ossClient != null;
             ossClient.shutdown();
         }
         return uploadUrl;

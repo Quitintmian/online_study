@@ -20,7 +20,7 @@ public class OssController {
     @Autowired
     private OssService ossService;
 
-    @PostMapping("")
+    @PostMapping
     @ApiOperation(value = "文件上传")
     public R uploadOssFile(MultipartFile file){
         // 获取上传文件,返回Oss资源地址
