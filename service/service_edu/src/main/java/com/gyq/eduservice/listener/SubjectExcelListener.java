@@ -4,7 +4,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gyq.eduservice.entity.EduSubject;
-import com.gyq.eduservice.entity.excel.SubjectData;
+import com.gyq.eduservice.entity.excel.ExcelSubjectData;
 import com.gyq.eduservice.service.EduSubjectService;
 import com.gyq.servicebase.exceptionhandler.GuliException;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
 /**
  * 从Excel中读取数据，并添加到数据库中
  */
-public class SubjectExcelListener extends AnalysisEventListener<SubjectData>{
+public class SubjectExcelListener extends AnalysisEventListener<ExcelSubjectData>{
 
     // 日志工厂
     public static final Logger logger = LoggerFactory.getLogger(SubjectExcelListener.class);
@@ -30,7 +30,7 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData>{
     }
 
     @Override
-    public void invoke(SubjectData subjectData, AnalysisContext analysisContext) {
+    public void invoke(ExcelSubjectData subjectData, AnalysisContext analysisContext) {
         logger.info("正在读取..." + subjectData);
         if (subjectData == null)
             throw new GuliException(20001,"文件数据为空");
@@ -78,7 +78,7 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData>{
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-
+        logger.info("读取完成");
     }
 
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 // 与Excel形成映射
 @Data
-public class SubjectData {
+public class ExcelSubjectData {
     @ExcelProperty(index = 0)
     private String oneSubjectName;
     @ExcelProperty(index = 1)
