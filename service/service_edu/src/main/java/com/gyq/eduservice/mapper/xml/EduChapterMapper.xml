@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.eduservice.mapper.EduChapterMapper">
+
+
+
+    <select id="getAll" resultType="com.gyq.eduservice.entity.EduChapter">
+        select * from edu_chapter
+    </select>
+
+    <resultMap id="ChapterVideo" type="com.gyq.eduservice.entity.chapter.ChapterVo">
+        <result property="id" column="a_id"/>
+        <result property="title" column="a_title"/>
+        <collection property="children" javaType="com.gyq.eduservice.entity.chapter.VideoVo">
+            <result property="id" column="b_id"/>
+            <result property="title" column="b_title"/>
+        </collection>
+    </resultMap>
+    <select id="getChapterVideo" resultMap="ChapterVideo">
+        select a.id a_id,a.title a_title,b.id b_id,b.title b_title
+        from edu_chapter a left join edu_video b
+        on a.course_id = b.course_id
+          and a.id = b.chapter_id
+          where a.course_id=#{courseId};
+    </select>
+
+</mapper>

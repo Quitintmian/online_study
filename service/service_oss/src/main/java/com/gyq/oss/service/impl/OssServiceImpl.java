@@ -5,6 +5,7 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.gyq.oss.service.OssService;
 import com.gyq.oss.utils.ConstantPropertiesUtils;
 import com.gyq.oss.utils.FileNameUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 
 @Service
+@Slf4j
 public class OssServiceImpl implements OssService {
 
     @Override
@@ -33,6 +35,7 @@ public class OssServiceImpl implements OssService {
             ossClient.putObject(bucketName, fileUrl, inputStream);
             // 形如 https://onlinedemo.oss-cn-chengdu.aliyuncs.com/mengzi.jpg
             uploadUrl = "https://"+bucketName+"."+endpoint+"/"+fileUrl;
+            log.info("文件上传成功，地址为" + uploadUrl);
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
