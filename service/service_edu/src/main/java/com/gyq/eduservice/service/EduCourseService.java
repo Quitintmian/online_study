@@ -3,6 +3,7 @@ package com.gyq.eduservice.service;
 import com.gyq.eduservice.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gyq.eduservice.entity.vo.CourseInfoVo;
+import com.gyq.eduservice.entity.vo.CoursePublishVo;
 
 /**
  * <p>
@@ -19,4 +20,8 @@ public interface EduCourseService extends IService<EduCourse> {
     CourseInfoVo getCourseInfoVo(String courseId);
 
     int updateCourseInfo(CourseInfoVo courseInfoVo);
+    // 手写sql
+    CoursePublishVo CoursePublishInfo(String id);
+
+    void removeCourse(String id);
 }

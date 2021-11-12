@@ -9,6 +9,7 @@ import com.gyq.eduservice.mapper.EduChapterMapper;
 import com.gyq.eduservice.service.EduChapterService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gyq.eduservice.service.EduVideoService;
+import com.gyq.servicebase.exceptionhandler.GuliException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
     @Autowired
     EduChapterMapper chapterMapper;
 
+    // 得到章节-小节 树
     @Override
     public List<ChapterVo> getChapterVideoByCourseId(String courseId) {
 
@@ -100,6 +102,26 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
     @Override
     public List<EduChapter> getAll() {
         return chapterMapper.getAll();
+    }
+
+    @Override
+    public boolean deleteChapter(String chapterId) {
+        // 通过章节id查小结表，是否有数据
+        // select count(1) from video_table where chapter_id = #{chapterId}
+        QueryWrapper<EduVideo> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("chapter_id",chapterId);
+        int count = videoService.count(queryWrapper);
+        if (count == 0){
+            int result = baseMapper.deleteById(chapterId);
+            return result > 0;
+        }else throw new GuliException(20001,"不能删除");
+    }
+
+    @Override
+    public void removeChapterByCourseId(String courseId) {
+        QueryWrapper<EduChapter> wrapper = new QueryWrapper<>();
+        wrapper.eq("course_id",courseId);
+        baseMapper.delete(wrapper);
     }
 
 }

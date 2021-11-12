@@ -1,5 +1,6 @@
 package com.gyq.eduservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gyq.eduservice.entity.EduVideo;
 import com.gyq.eduservice.mapper.EduVideoMapper;
 import com.gyq.eduservice.service.EduVideoService;
@@ -17,4 +18,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> implements EduVideoService {
 
+    // TODO 删除小节，还要删除视频文件
+
+    @Override
+    public void removeVideoByCourseId(String courseId) {
+        QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
+        wrapper.eq("course_id",courseId);
+        baseMapper.delete(wrapper);
+    }
 }

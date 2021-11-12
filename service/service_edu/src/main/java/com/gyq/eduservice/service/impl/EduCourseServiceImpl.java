@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gyq.eduservice.entity.EduCourse;
 import com.gyq.eduservice.entity.EduCourseDescription;
 import com.gyq.eduservice.entity.vo.CourseInfoVo;
+import com.gyq.eduservice.entity.vo.CoursePublishVo;
 import com.gyq.eduservice.mapper.EduCourseMapper;
+import com.gyq.eduservice.service.EduChapterService;
 import com.gyq.eduservice.service.EduCourseDescriptionService;
 import com.gyq.eduservice.service.EduCourseService;
+import com.gyq.eduservice.service.EduVideoService;
 import com.gyq.servicebase.exceptionhandler.GuliException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,13 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     private EduCourseDescriptionService courseDescriptionService;
+
+    @Autowired
+    private EduChapterService chapterService;
+
+    @Autowired
+    private EduVideoService videoService;
+
 
     // 添加课程信息
     @Override
@@ -77,5 +87,22 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
         return update;
 
+    }
+
+    @Override
+    public CoursePublishVo CoursePublishInfo(String id) {
+        return baseMapper.getPublishCourseInfo(id);
+    }
+
+
+
+    @Override
+    public void removeCourse(String id) {
+
+        videoService.removeVideoByCourseId(id);        // 删小节
+        chapterService.removeChapterByCourseId(id);    // 删章节
+        courseDescriptionService.removeById(id);       // 删除描述
+        int count = baseMapper.deleteById(id);
+        if (count == 0) throw new GuliException(20001,"删除课程失败！");
     }
 }
