@@ -8,11 +8,15 @@ import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.gyq.servicebase.exceptionhandler.GuliException;
 import com.gyq.vod.utils.ConstantPropertiesUtils;
 import com.gyq.vod.utils.InitVodClient;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.List;
 
+@Slf4j
 @Service
 public class VodServiceImpl implements VodService{
 
@@ -49,7 +53,7 @@ public class VodServiceImpl implements VodService{
             DefaultAcsClient client = InitVodClient.initVodClient(accessKeyId,accessKeySecret);
             DeleteVideoRequest request = new DeleteVideoRequest();
             request.setVideoIds(id);
-
+            log.info("删除视频，id:"+id);
             client.getAcsResponse(request);
         }catch (Exception e){
             e.printStackTrace();
@@ -57,6 +61,27 @@ public class VodServiceImpl implements VodService{
         }
 
 
+    }
+
+    @Override
+    public void removeManyVideo(List ids) {
+        String accessKeyId = ConstantPropertiesUtils.ACCESS_KEY_ID;
+        String accessKeySecret = ConstantPropertiesUtils.ACCESS_KEY_SECRET;
+
+        try {
+            // 初始化对象
+            DefaultAcsClient client = InitVodClient.initVodClient(accessKeyId,accessKeySecret);
+            DeleteVideoRequest request = new DeleteVideoRequest();
+
+            // id之间用逗号分开
+            String videoIds = StringUtils.join(ids.toArray(), ",");
+            request.setVideoIds(videoIds);
+            log.info("删除视频，ids:"+videoIds);
+            client.getAcsResponse(request);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new GuliException(20001,"删除视频失败!");
+        }
     }
 }
 

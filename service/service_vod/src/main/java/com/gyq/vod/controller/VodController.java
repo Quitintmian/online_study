@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/eduvod/video")
 @CrossOrigin
@@ -27,5 +29,13 @@ public class VodController {
         vodService.removeVideo(id);
         return R.ok();
     }
+
+    // 删除多个阿里云的视频
+    @DeleteMapping("deleteBatch")
+    public R deleteBatch(@RequestParam("ids") List<String> ids){
+        vodService.removeManyVideo(ids);
+        return R.ok();
+    }
+
 
 }

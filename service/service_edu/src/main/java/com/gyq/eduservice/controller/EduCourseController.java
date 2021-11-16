@@ -103,7 +103,7 @@ public class EduCourseController {
         return R.ok().data(map);
     }
 
-    // 删除 课程信息
+    // 删除 课程信息 需要删除
     @DeleteMapping("{id}")
     public R deleteCourse(@PathVariable String id){
         courseService.removeCourse(id);

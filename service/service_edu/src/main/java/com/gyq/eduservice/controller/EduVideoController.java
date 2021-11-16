@@ -2,9 +2,12 @@ package com.gyq.eduservice.controller;
 
 
 import com.gyq.commonutils.R;
+import com.gyq.eduservice.client.VodClient;
 import com.gyq.eduservice.entity.EduVideo;
 import com.gyq.eduservice.service.EduVideoService;
+import com.gyq.servicebase.exceptionhandler.GuliException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,6 +26,10 @@ public class EduVideoController {
     @Autowired
     private EduVideoService eduVideoService;
 
+    // 远程调用 属于 httpclient
+    @Autowired
+    private VodClient vodClient;
+
     // 添加
     @PostMapping("addVideo")
     public R addVideo(@RequestBody EduVideo eduVideo){
@@ -30,9 +37,19 @@ public class EduVideoController {
         return R.ok();
     }
 
-    // TODO 视频待删除
+    // 删小节 然后删视频
     @DeleteMapping("{id}")
     public R deleteVideo(@PathVariable String id){
+        // 查询出视频id
+        String videoSourceId = eduVideoService.getById(id).getVideoSourceId();
+        if (!StringUtils.isEmpty(videoSourceId)){
+            // 若删除不成功，会执行熔断处理
+            R result = vodClient.removeAlyVideo(videoSourceId);
+            if (result.getCode() == 20001){
+                throw new GuliException(20001,"视频删除出错，熔断器处理...");
+            }
+        }
+        // 最后删除小节
         eduVideoService.removeById(id);
         return R.ok();
     }
